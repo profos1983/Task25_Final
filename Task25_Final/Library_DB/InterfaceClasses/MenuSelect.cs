@@ -8,7 +8,7 @@ namespace Library_DB.InterfaceClasses
 {
     public class MenuSelect
     {
-        public static void StartMenuSelect()
+        public static void StartMenu()
         {
             while (true)
             {
@@ -30,7 +30,6 @@ namespace Library_DB.InterfaceClasses
                             if (int.TryParse(Console.ReadLine(), out int userKeyId))
                             {
                                 UserRepository.GetUserInfoById(userKeyId);
-
                             }
                             else Console.WriteLine("Необходимо ввести число!.");
                             Console.WriteLine("Для выхода из пункта меню введите любой символ. ");

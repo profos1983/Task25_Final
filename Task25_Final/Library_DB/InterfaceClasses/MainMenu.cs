@@ -21,12 +21,11 @@ namespace Library_DB.InterfaceClasses
                     switch (userKey)
                     {
                         case 1:
-                            MenuSelect.StartMenuSelect();
+                            MenuSelect.StartMenu();
                             break;
                         case 2:
-                            Console.WriteLine("Запуститься окно, отвечающее за зарпосы на изменения в БД.");
-                            Console.WriteLine("Для выхода из пункта меню введите любой символ. ");
-                            Console.ReadKey();
+
+                            MenuUpdateDelete.StartMenu();
                             break;
                         case 3:
                             Environment.Exit(0);

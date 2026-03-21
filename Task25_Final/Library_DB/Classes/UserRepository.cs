@@ -26,7 +26,6 @@ namespace Library_DB.Classes
                 {
                     Console.WriteLine("Пользователь с Id=" + Id + " в базе данных не найден!" );
                 }
-
             }
         }
         // Вывод данных по всем пользователям
@@ -50,18 +49,72 @@ namespace Library_DB.Classes
 
             }
         }
-        // добавление пользователя в БД
+        // добавление нового пользователя в БД
         public static void InsertUserInBD() 
         {
             using (var db = new AppContext())
             {
-                var newUser = User.CreateNewUser();
+                var newUser = UserRepository.CreateNewUser();
                 db.Users.Add(newUser);
                 db.SaveChanges();
-
             }
         }
-        // удаление пользователя из БД
+        // удаление пользователя из BD
+        public static void DeletetUserFromBD(int userIdForDelete) 
+        {
+            using (var db = new AppContext())
+            {
+                var userForDelete = db.Users.Find(userIdForDelete);
+                if (userForDelete != null)
+                {
+                    db.Users.Remove(userForDelete);
+                    db.SaveChanges();
+                    Console.WriteLine("Пользователь с Id=" + userForDelete + " удален из БД!");
+                }
+                else 
+                {
+                    Console.WriteLine("Пользователь с Id=" + userIdForDelete + " не найден.");
+                }
+            }
+        }
         // Обновление имени пользователя по Id
+        public static void UpdatetUserNameById(int userId)
+        {
+            using (var db = new AppContext())
+            {
+                var userForUpdateName = db.Users.Find(userId);
+                if (userForUpdateName != null)
+                {
+                    Console.WriteLine("Введите новое имя пользователя: ");
+                    string newName = Console.ReadLine();
+
+                    userForUpdateName.Name = newName;
+                    db.Users.Update(userForUpdateName);
+                    db.SaveChanges();
+                    Console.WriteLine("Имя пользователя с Id=" + userId + " изменено!");
+                }
+                else
+                {
+                    Console.WriteLine("Пользователь с Id=" + userId + " не найден.");
+                }
+            }
+        }
+        // Метод для создания нового пользователя в БД
+        public static User CreateNewUser()
+        {
+            string newUserName;
+            string newUserEmail;
+            do
+            {
+                Console.WriteLine("Имя пользователя не может быть пустым! Введите имя пользователя: ");
+                newUserName = Console.ReadLine();
+
+                Console.WriteLine("Введите Email пользователя (может отсутствовать у пользователя): ");
+                newUserEmail = Console.ReadLine();
+            }
+            while (string.IsNullOrEmpty(newUserName));
+
+            return new User() { Name = newUserName, Email = newUserEmail };
+        }
     }
 }
