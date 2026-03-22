@@ -66,18 +66,18 @@ namespace Library_DB.InterfaceClasses
                             break;
 
                         case 7:
-                            Console.WriteLine("Заплатка для 7 пункта меню");
+                            BookRepository.GetLastYearBook();
                             Console.WriteLine("Для выхода из пункта меню введите любой символ.");
                             Console.ReadKey();
                             break;
                         case 8:
-                            Console.WriteLine("Заплатка для 8 пункта меню");
+                            BookRepository.GetListBookOrderByTitle();
                             Console.WriteLine("Для выхода из пункта меню введите любой символ.");
                             Console.ReadKey();
                             break;
 
                         case 9:
-                            Console.WriteLine("Заплатка для 9 пункта меню");
+                            BookRepository.GetListBookOrderByYear();
                             Console.WriteLine("Для выхода из пункта меню введите любой символ.");
                             Console.ReadKey();
                             break;

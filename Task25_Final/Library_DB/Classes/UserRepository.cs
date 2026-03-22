@@ -265,6 +265,7 @@ namespace Library_DB.Classes
             }
         }
 
+        // Получить количество книг на руках у пользователя
         public static void SelectBookByJenreYear()
         {
             int startYear;
@@ -313,18 +314,6 @@ namespace Library_DB.Classes
                 {
                     Console.WriteLine(b.Title);
                 }
-
-
-                //using (var db = new AppContext())
-                //{
-                //    authorIdName =
-                //        (from a in db.Authors
-                //         select new AuthorIdName
-                //         {
-                //             Id = a.Id,
-                //             Name = a.Name
-                //         }
-                //        ).ToList();
             }
         }
     }

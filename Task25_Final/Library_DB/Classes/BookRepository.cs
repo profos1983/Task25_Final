@@ -412,5 +412,64 @@ namespace Library_DB.Classes
             }
         }
 
+        // Получение последней вышедшей книги
+        public static void GetLastYearBook()
+        {
+            using (var db = new AppContext())
+            {
+                int maxYear =
+                    (from a in db.Books
+                     select a.ReleaseYear).Max();
+
+                var quary =
+                    (from b in db.Books
+                     where b.ReleaseYear == maxYear
+                     select b.Title).ToList();
+
+                Console.WriteLine("Список книг, вышедших в последнем учтенном году");
+                foreach (var b in quary)
+                {
+                    Console.WriteLine(b);
+                }
+            }
+        }
+
+        // Получение списка всех книг, отсортированного в алфавитном порядке по названию
+        public static void GetListBookOrderByTitle()
+        {
+            using (var db = new AppContext())
+            {
+                var quary =
+                    (from a in db.Books
+                     orderby a.Title
+                     select a.Title
+                     ).ToList();
+
+                Console.WriteLine("Cписок всех книг, отсортированного в алфавитном порядке по названию");
+                foreach (var b in quary)
+                {
+                    Console.WriteLine(b);
+                }
+            }
+        }
+
+        // Получение списка всех книг, отсортированного в порядке убывания года их выхода
+        public static void GetListBookOrderByYear()
+        {
+            using (var db = new AppContext())
+            {
+                var quary =
+                    (from a in db.Books
+                     orderby a.ReleaseYear
+                     select a.Title
+                     ).ToList();
+
+                Console.WriteLine("Cписок всех книг, отсортированного в порядке убывания года их выхода");
+                foreach (var b in quary)
+                {
+                    Console.WriteLine(b);
+                }
+            }
+        }
     }
 }
