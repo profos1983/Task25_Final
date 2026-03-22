@@ -17,7 +17,7 @@ namespace Library_DB.Classes
         
 
         // Связь с промежуточной таблицей UserBook 
-        public ICollection<UserBook> UserBooks { get; set; }
+        public ICollection<UserBook> UserBooks { get; set; } = new List<UserBook>();
     }
 }
 

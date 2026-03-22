@@ -146,60 +146,60 @@ namespace Library_DB.Classes
         public static Book CreateNewBook()
         {
 
-                bool success = false;
-                string bookTitle;
-                int bookReleaseYear;
-                string bookJenre;
-                int bookAmount;
-                int bookAuthorId;
+            bool success = false;
+            string bookTitle;
+            int bookReleaseYear;
+            string bookJenre;
+            int bookAmount;
+            int bookAuthorId;
 
 
-                do
+            do
+            {
+                Console.WriteLine("Введите наименование книги: ");
+                bookTitle = Console.ReadLine();
+                if (bookTitle.IsNullOrEmpty())
                 {
-                    Console.WriteLine("Введите наименование книги: ");
-                    bookTitle = Console.ReadLine();
-                    if (bookTitle.IsNullOrEmpty())
-                    {
-                        Console.WriteLine("Наименование не может быть пустым!");
-                    }
+                    Console.WriteLine("Наименование не может быть пустым!");
                 }
-                while (bookTitle.IsNullOrEmpty());
+            }
+            while (bookTitle.IsNullOrEmpty());
 
 
-                do
+            do
+            {
+                success = false;
+                Console.WriteLine("Введите год издания книги: ");
+                if (!int.TryParse(Console.ReadLine(), out bookReleaseYear))
                 {
-                    success = false;
-                    Console.WriteLine("Введите год издания книги: ");
-                    if (!int.TryParse(Console.ReadLine(), out bookReleaseYear))
-                    {
-                        Console.WriteLine("Необходимо ввести целое число!");
-                    }
-                    else success = true;
+                    Console.WriteLine("Необходимо ввести целое число!");
                 }
-                while (success == false);
+                else success = true;
+            }
+            while (success == false);
 
-                do
+            do
+            {
+                Console.WriteLine("Введите жанр книги: ");
+                bookJenre = Console.ReadLine();
+                if (bookJenre.IsNullOrEmpty())
                 {
-                    Console.WriteLine("Введите жанр книги: ");
-                    bookJenre = Console.ReadLine();
-                    if (bookJenre.IsNullOrEmpty())
-                    {
-                        Console.WriteLine("Наименование жанра книги не может быть пустым!");
-                    }
+                    Console.WriteLine("Наименование жанра книги не может быть пустым!");
                 }
-                while (bookJenre.IsNullOrEmpty()) ;
-                
-                do
+            }
+            while (bookJenre.IsNullOrEmpty());
+
+            do
+            {
+                success = false;
+                Console.WriteLine("Введите количество книг в библиотеке: ");
+                if (!int.TryParse(Console.ReadLine(), out bookAmount))
                 {
-                    success = false;
-                    Console.WriteLine("Введите количество книг в библиотеке: ");
-                    if (!int.TryParse(Console.ReadLine(), out bookAmount))
-                    {
-                        Console.WriteLine("Необходимо ввести целое число!");
-                    }
-                    else success = true;
+                    Console.WriteLine("Необходимо ввести целое число!");
                 }
-                while (success == false);
+                else success = true;
+            }
+            while (success == false);
 
             do
             {
@@ -208,19 +208,19 @@ namespace Library_DB.Classes
                 // Получаем список автор + id из BD
                 using (var db = new AppContext())
                 {
-                    authorIdName = 
+                    authorIdName =
                         (from a in db.Authors
-                        select new AuthorIdName
-                            {
-                                Id = a.Id,
-                                Name = a.Name
-                            }
+                         select new AuthorIdName
+                         {
+                             Id = a.Id,
+                             Name = a.Name
+                         }
                         ).ToList();
                 }
                 Console.WriteLine("Cписок имеющихся в БД авторов. Укажите Id автора, который написал книгу: ");
-                
+
                 // Выводим пользователю список авторов, имеющихся в базе данных:
-                foreach(var a in authorIdName)
+                foreach (var a in authorIdName)
                 {
                     Console.WriteLine("Id автора: " + a.Id + "| Имя автора: " + a.Name);
                 }
@@ -239,7 +239,7 @@ namespace Library_DB.Classes
                             success = true;
                         }
                     }
-                    
+
                     if (success == false) Console.WriteLine("Введенное число не соответствует имеющимся ID авторов.");
                 }
             }
@@ -247,5 +247,170 @@ namespace Library_DB.Classes
 
             return new Book() { Title = bookTitle, ReleaseYear = bookReleaseYear, Jenre = bookJenre, Amount = bookAmount, AuthorId = bookAuthorId };
         }
+
+        // Метод для поиска книг по жанру вышедших между определенными годами.
+        public static void SelectBookByJenreYear()
+        {
+            int startYear;
+            int endYear;
+            bool isInt = false;
+
+            Console.WriteLine("Введите название жанра: ");
+            string jenre = Console.ReadLine();
+
+            do
+            {
+                isInt = false;
+                Console.WriteLine("Введите начальный год поиска книги по жанру: ");
+                if (int.TryParse(Console.ReadLine(), out startYear))
+                {
+                    isInt = true;
+                }
+                else Console.WriteLine("Необходимо ввести целое число!.");
+            }
+            while (isInt == false);
+
+            do
+            {
+                isInt = false;
+                Console.WriteLine("Введите конечный год поиска книги по жанру: ");
+                if (int.TryParse(Console.ReadLine(), out endYear))
+                {
+                    isInt = true;
+                }
+                else Console.WriteLine("Необходимо ввести целое число!.");
+            }
+            while (isInt == false);
+
+            using (var db = new AppContext())
+            {
+                var selectBookByJenreYear =
+                    (from a in db.Books
+                     where a.Jenre == jenre && (a.ReleaseYear >= startYear && a.ReleaseYear <= endYear)
+                     select new
+                     {
+                         Title = a.Title
+                     }
+                     ).ToList();
+
+                if (selectBookByJenreYear.Count != 0)
+                {
+                    foreach (var b in selectBookByJenreYear)
+                    {
+                        Console.WriteLine(b.Title);
+                    }
+                }
+                else Console.WriteLine("По Вашему запросу ничего не найдено!");
+            }
+        }
+
+        // Метод получения книг определенного автора в библиотеке
+        public static void SelectSumBookByAuthor()
+        {
+            Console.WriteLine("Введите ФИО автора книг: ");
+            string nameAuthor = Console.ReadLine();
+
+            using (var db = new AppContext())
+            {
+                var result =
+                    (from a in db.Authors
+                     join b in db.Books on a.Id equals b.AuthorId
+                     where a.Name == nameAuthor
+                     select
+                    b.Amount).Sum();
+
+                Console.WriteLine("Количество книг автора: " + nameAuthor + " равно" + result);
+
+            }
+        }
+
+        // Метод получения книг определенного Жанра в библиотеке в библиотеке
+        public static void SelectBookByJenre()
+        {
+            Console.WriteLine("Введите жанр: ");
+            string jenre = Console.ReadLine();
+
+            using (var db = new AppContext())
+            {
+                var sumBookByJenre =
+                    (from b in db.Books
+                     where b.Jenre == jenre
+                     select b.Amount).Sum();
+
+                Console.WriteLine("Количество книг в жанре: " + jenre + " равно " + sumBookByJenre);
+            }
+        }
+
+        // Получить булевый флаг о том, есть ли книга определенного автора и с определенным названием в библиотеке.
+        public static bool IsBookExist()
+        {
+            Console.WriteLine("Введите Имя автора: ");
+            string nameAutor = Console.ReadLine();
+
+            Console.WriteLine("Введите название книги: ");
+            string title = Console.ReadLine();
+            
+            using (var db = new AppContext())
+            {
+                var book =
+                    (from b in db.Books
+                    join a in db.Authors on b.AuthorId equals a.Id
+                    where b.Title == title && a.Name == nameAutor
+                    select b.Id).FirstOrDefault();
+
+                if (book != 0) 
+                {
+                    return true;
+                }
+                else return false; 
+            }
+
+        }
+
+        // Получить булевый флаг о том, есть ли определенная книга на руках у пользователя.
+        public static bool IsbookOnUser()
+        {
+            Console.WriteLine("Введите название книги: ");
+            string title = Console.ReadLine();
+
+            Console.WriteLine("Введите ФИО пользователя: ");
+            string name = Console.ReadLine();
+
+            using (var db = new AppContext())
+            {
+                var query =
+                    (from a in db.UserBooks
+                    join b in db.Books on a.BookId equals b.Id
+                    join u in db.Users on a.UserId equals u.Id
+                    where b.Title == title && u.Name == name
+                    select a.BookId).FirstOrDefault();
+
+                if (query != 0)
+                {
+                    return true;
+                }
+                else return false;
+            }
+
+        }
+
+        // Получить количество книг на руках у пользователя
+        public static void GetSumBookOnUser()
+        {
+            Console.WriteLine("Введите ФИО пользователя: ");
+            string name = Console.ReadLine();
+
+            using (var db = new AppContext())
+            {
+                var sumBook =
+                    (from a in db.UserBooks
+                     join u in db.Users on a.UserId equals u.Id
+                     where u.Name == name
+                     select a.Amount).Sum();
+
+                Console.WriteLine("Количество книг у пользователя: " + name + " равно: " + sumBook);
+            }
+        }
+
     }
 }

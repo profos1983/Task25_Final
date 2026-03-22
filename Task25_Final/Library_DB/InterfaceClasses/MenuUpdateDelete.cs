@@ -18,8 +18,10 @@ namespace Library_DB.InterfaceClasses
                 Console.WriteLine("4 - Добавление книги в БД.");
                 Console.WriteLine("5 - Удаление книги из БД по Id.");
                 Console.WriteLine("6 - Обновление года выпуска книги по Id.");
-                Console.WriteLine("7 - Возврат в основно меню.");
-                Console.WriteLine("8 - Выход из программы.");
+                Console.WriteLine("7 - Взять книгу пользователем (по Id пользователя и Id книги).");
+                Console.WriteLine("8 - Вернуть книгу пользователем (по Id пользователя и Id книги).");
+                Console.WriteLine("9 - Возврат в основно меню.");
+                Console.WriteLine("10 - Выход из программы.");
 
                 try
                 {
@@ -83,11 +85,24 @@ namespace Library_DB.InterfaceClasses
                             break;
 
                         case 7:
+                            UserRepository.GetBookUser();
+                            Console.WriteLine("Для выхода из пункта меню введите любой символ. ");
+                            Console.ReadKey();
+                            break;
+
+                        case 8:
+                            UserRepository.GetBookUser();
+                            Console.WriteLine("Заплатка для 8 пункта.");
+                            Console.WriteLine("Для выхода из пункта меню введите любой символ. ");
+                            Console.ReadKey();
+                            break;
+
+                        case 9:
                             Console.Clear();
                             MainMenu.StartMainMenu();
                             break;
 
-                        case 8:
+                        case 10:
                             Environment.Exit(0);
                             break;
 

@@ -13,7 +13,8 @@ namespace Library_DB.InterfaceClasses
                 Console.WriteLine("Меню выбора действий с базой данных Library_DB. Введите:");
                 Console.WriteLine("1 - Для получения данных из БД.");
                 Console.WriteLine("2 - Для изменения данных в БД.");
-                Console.WriteLine("3 - Для выхода из программы.");
+                Console.WriteLine("3 - Для спец.запросов к БД (Задание 25.5.4*).");
+                Console.WriteLine("4 - Для выхода из программы.");
 
                 try
                 {
@@ -24,10 +25,13 @@ namespace Library_DB.InterfaceClasses
                             MenuSelect.StartMenu();
                             break;
                         case 2:
-
                             MenuUpdateDelete.StartMenu();
                             break;
                         case 3:
+                            MenuSpecSelect.StartMenu();
+                            break;
+
+                        case 4:
                             Environment.Exit(0);
                             break;
 
